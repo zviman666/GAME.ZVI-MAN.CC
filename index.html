@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "rcp95tutft");
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>𝓱𝓮𝓂𝓁𝓁𝓸 哈喽 안녕하세 नमस्ते 爱҉你҉哦҉</title>
+     <!-- Favicon -->
+    <link rel="icon" href="https://image.16pic.com/00/93/57/16pic_9357566_s.jpg" type="image/png">
+
+    <style>
+        body {
+            font-family: 'PingFang SC', sans-serif; /* 使用苹方字体 */
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* 确保页面顶部对齐 */
+            flex-direction: column;
+            text-align: center;
+        }
+
+        /* 计时器和积分器的容器 */
+        .info-container {
+            display: flex;
+            flex-direction: column; /* 垂直排列 */
+            justify-content: center; /* 横向居中 */
+            align-items: center; /* 垂直居中 */
+            position: absolute;
+            top: 10%; /* 确保它们位于页面的上方 */
+            width: 100%;
+        }
+
+        /* 计时器的样式 */
+        #countdown {
+            font-size: 6vw; /* 使用视口宽度进行适配 */
+            color: #333;
+            font-family: 'PingFang SC', sans-serif; /* 使用苹方字体 */
+            text-align: center;
+            margin-bottom: 10px; /* 添加下边距 */
+            font-weight: bolder; /* 加粗字体 */
+            z-index: 10; /* 确保它在红包上方 */
+            pointer-events: none; /* 禁用鼠标事件 */
+            user-select: none; /* 禁止文本选中 */
+        }
+
+        /* 积分器的样式 */
+        #score {
+            font-size: 6vw;
+            color: #333;
+            font-family: 'PingFang SC', sans-serif;
+            text-align: center;
+            font-weight: bolder;
+            z-index: 10; /* 确保它在红包上方 */
+            pointer-events: none; /* 禁用鼠标事件 */
+            user-select: none; /* 禁止文本选中 */
+        }
+
+        /* 按钮样式 */
+        .redButton, .blueButton {
+            padding: 15px 30px;
+            margin: 20px 0;
+            font-size: 6vw; /* 与计时器字体大小一致 */
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .redButton {
+            background-color: red;
+            color: white;
+        }
+
+        .blueButton {
+            background-color: #3498db;
+            color: white;
+        }
+
+        /* 页面结束后的文本 */
+        .end-message {
+            position: absolute;
+            top: 50%; /* 将文本往下移动，避免重叠 */
+            width: 100%;
+            text-align: center;
+            font-size: 28px; /* 字体大小设置为28px */
+            font-weight: bolder;
+            line-height: 1.5;
+        }
+
+        /* 页面结束后的按钮 */
+        .end-buttons {
+            position: absolute;
+            top: 70%; /* 将按钮设置在页面中间位置 */
+            width: 100%;
+            text-align: center;
+        }
+
+        /* 红包的样式 */
+        .redPacket {
+            position: absolute;
+            width: 80px;
+            height: 120px;
+            background: linear-gradient(to bottom, #ff4f00, #ff9a00); /* 红色渐变背景 */
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: transparent; /* 隐藏金额 */
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            user-select: none;
+            cursor: pointer;
+            opacity: 1;
+            transition: transform 0.2s ease, opacity 0.5s ease; /* 动画效果 */
+            z-index: 1; /* 红包的图层较低，始终在计时器和积分器下方 */
+        }
+
+        /* 中央黄色圆形的"￥"符号 */
+        .redPacket .coin {
+            position: absolute;
+            bottom: 15px;
+            background-color: #f7c300;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            color: #b15a00;
+        }
+
+        /* 爆炸动画 */
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(2); opacity: 0.6; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+
+        .explosion {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: yellow;
+            border-radius: 50%;
+            animation: explode 0.5s forwards;
+            z-index: 999;
+        }
+    </style>
+    <script>
+        // 页面标签标题更改功能
+        document.addEventListener('DOMContentLoaded', function () {
+            const originalTitle = "𝓱𝓮𝓂𝓁𝓁𝓸 哈喽 안녕하세 नमस्ते 爱҉你҉哦҉";
+            const leavingTitle = "歪？别走! 𝕓𝕒𝕔𝕜!";
+            
+            window.addEventListener('blur', function () {
+                document.title = leavingTitle;
+            });
+
+            window.addEventListener('focus', function () {
+                document.title = originalTitle;
+            });
+        });
+
+        // 倒计时功能（精确到0.01秒）
+        let countdownTimer;
+        let timeLeft = 60;
+        let preciseTime = 0; // 精确到0.01秒
+        let allRedPackets = []; // 用来存储所有红包的数组
+        let score = 0; // 用户积分
+
+        function startCountdown() {
+            countdownTimer = setInterval(function () {
+                if (timeLeft <= 0) {
+                    clearInterval(countdownTimer);
+                    document.getElementById('countdown').innerText = '时间到!';
+                    removeAllRedPackets(); // 时间到后移除所有红包
+                    showEndMessage(); // 显示结算按钮
+                } else {
+                    preciseTime += 0.01; // 增加精度
+                    document.getElementById('countdown').innerText = `剩余时间: ${timeLeft.toFixed(2)}s`; // 显示精确的倒计时
+                    timeLeft -= 0.01; // 每次减少0.01秒
+                }
+            }, 10); // 每10毫秒更新一次
+        }
+
+        // 随机红包金额生成函数
+        function getRandomAmount() {
+            const amounts = [
+                { amount: 0.01, probability: 0.40 },
+                { amount: 0.05, probability: 0.15 },
+                { amount: 0.1, probability: 0.15 },
+                { amount: 0.5, probability: 0.10 },
+                { amount: 1, probability: 0.10 },
+                { amount: 2, probability: 0.05 },
+                { amount: 3, probability: 0.05 }
+            ];
+
+            const random = Math.random();
+            let cumulativeProbability = 0;
+
+            for (let i = 0; i < amounts.length; i++) {
+                cumulativeProbability += amounts[i].probability;
+                if (random < cumulativeProbability) {
+                    return amounts[i].amount;
+                }
+            }
+
+            return amounts[0].amount;
+        }
+
+        // 创建红包并设置其运动
+        function createRedPacket() {
+            const redPacket = document.createElement('div');
+            const amount = getRandomAmount();
+            
+            // 隐藏红包金额
+            redPacket.setAttribute('data-amount', amount); // 用数据属性存储金额
+            redPacket.classList.add('redPacket');
+
+            // 添加“￥”符号
+            const coin = document.createElement('div');
+            coin.classList.add('coin');
+            coin.innerText = '￥'; // 符号更正为￥
+            redPacket.appendChild(coin);
+
+            // 随机设置红包的起始位置
+            const startX = Math.random() * window.innerWidth;
+            redPacket.style.left = `${startX}px`;
+            redPacket.style.top = `-150px`; // 红包从顶部开始
+
+            // 设置红包下落的速度，确保1.5秒内到达底部
+            let speed = window.innerHeight / 1.5; // 设置红包在1.5秒内从顶部到底部
+
+            // 动画效果，红包从上到下流动
+            document.body.appendChild(redPacket);
+            allRedPackets.push(redPacket); // 将红包添加到数组中
+
+            redPacket.onclick = function (event) {
+                // 点击红包时更新积分
+                updateScore(amount);
+                // 爆炸动画效果
+                triggerExplosion(event.clientX, event.clientY);
+                // 红包消失
+                redPacket.style.opacity = 0;
+                setTimeout(function () {
+                    document.body.removeChild(redPacket);
+                }, 500); // 等待爆炸动画结束后再移除红包
+            };
+
+            const moveRedPacket = setInterval(function () {
+                const currentTop = parseFloat(redPacket.style.top);
+
+                if (currentTop > window.innerHeight) {
+                    // 当红包流到页面底部时，移除红包
+                    clearInterval(moveRedPacket);
+                    document.body.removeChild(redPacket);
+                    allRedPackets = allRedPackets.filter(packet => packet !== redPacket);
+                } else {
+                    redPacket.style.top = `${currentTop + speed * 0.02}px`; // 计算每次移动的距离
+                }
+            }, 20);
+        }
+
+        // 更新积分
+        function updateScore(amount) {
+            score += amount;
+            document.getElementById('score').innerText = `积分: ￥${score.toFixed(2)}`;
+        }
+
+        // 爆炸动画触发
+        function triggerExplosion(x, y) {
+            const explosion = document.createElement('div');
+            explosion.classList.add('explosion');
+            explosion.style.left = `${x - 30}px`; // 调整爆炸位置
+            explosion.style.top = `${y - 30}px`;
+            document.body.appendChild(explosion);
+
+            // 爆炸动画结束后移除
+            setTimeout(() => {
+                document.body.removeChild(explosion);
+            }, 500); // 持续时间与爆炸动画一致
+        }
+
+        // 移除所有红包
+        function removeAllRedPackets() {
+            allRedPackets.forEach(packet => {
+                packet.style.opacity = 0;
+                setTimeout(() => {
+                    document.body.removeChild(packet);
+                }, 500);
+            });
+            allRedPackets = []; // 清空红包数组
+        }
+
+        // 显示结束后的提示文字和按钮
+        function showEndMessage() {
+            let buttonHtml = "";
+            if (score <= 20) { // 如果积分小于等于20
+                buttonHtml = `
+                    <div class="end-message">
+                        <p>菜就多练！🤣只有20元以上才能奖励！！</p>
+                    </div>
+                    <div class="end-buttons">
+                        <button class="redButton" onclick="window.location.reload()">再试一次</button>
+                    </div>
+                `;
+            } else if (score > 20) { // 如果积分大于20
+                buttonHtml = `
+                    <div class="end-message">
+                        <p>好厉害！前30名可以得到现金转账</p>
+                    </div>
+                    <div class="end-buttons">
+                        <button class="blueButton" onclick="window.location.href='https://pay.zvi-man.cc'">结账</button>
+                    </div>
+                `;
+            }
+
+            const endMessageDiv = document.createElement('div');
+            endMessageDiv.innerHTML = buttonHtml;
+            document.body.appendChild(endMessageDiv);
+        }
+
+        // 启动红包生成
+        function startRedPacketGame() {
+            const packetInterval = setInterval(function () {
+                if (timeLeft <= 0) {
+                    clearInterval(packetInterval);
+                } else {
+                    createRedPacket();
+                }
+            }, 300); // 每300ms生成一个红包，总共生成200个红包（200/60s）
+        }
+
+        // 页面加载时启动倒计时和红包生成
+        window.onload = function () {
+            startCountdown();
+            startRedPacketGame();
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="info-container">
+            <div id="countdown">剩余时间: 60s</div>
+            <div id="score">积分: ￥0.00</div>
+        </div>
+    </div>
+</body>
+</html>
